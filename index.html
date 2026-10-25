@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#D52B1E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Budget">
+<title>AlpesFinance · Budget</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--red:#D52B1E;--red2:#a81f15;--bg:#f6f6f7;--card:#fff;--tx:#18181b;--mut:#62626b;--bd:#e4e4e7;--ok:#15803d;--warn:#c2410c;--bad:#b91c1c}
+@media (prefers-color-scheme:dark){:root{--bg:#111113;--card:#1c1c1f;--tx:#f4f4f5;--mut:#a1a1aa;--bd:#2e2e33;--ok:#4ade80;--warn:#fb923c;--bad:#f87171}}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);padding-bottom:110px}
+header{background:var(--red);color:#fff;padding:calc(env(safe-area-inset-top) + 12px) 16px 14px;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;letter-spacing:.3px}
+.brand svg{width:22px;height:22px}
+.msw{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.msw button{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:12px;width:48px;height:44px;font-size:22px}
+.msw h1{margin:0;font-size:20px;text-transform:capitalize}
+main{padding:12px;max-width:640px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px}
+.card h2{font-size:16px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:center}
+.big{font-size:32px;font-weight:800;margin:2px 0}
+.row{display:flex;justify-content:space-between;padding:4px 0;color:var(--mut)}
+.row b{color:var(--tx)}
+.pos{color:var(--ok)!important}.neg{color:var(--bad)!important}
+.line{display:flex;gap:6px;align-items:center;padding:4px 0}
+.line input{min-width:0;border:1px solid var(--bd);background:transparent;color:var(--tx);border-radius:10px;padding:10px;font-size:16px}
+.line .lbl{flex:1}.line .amt{width:110px;text-align:right}
+.ib{border:0;background:transparent;color:var(--mut);font-size:20px;width:40px;height:44px;border-radius:10px}
+.add{border:1px dashed var(--bd);background:transparent;color:var(--mut);width:100%;padding:10px;border-radius:10px;font-size:15px;margin-top:6px}
+.cat{padding:8px 0;border-bottom:1px solid var(--bd)}.cat:last-child{border:0}
+.cat .t{display:flex;justify-content:space-between;font-weight:600}
+.cat .s{font-size:13px;color:var(--mut)}
+.bar{height:10px;background:var(--bd);border-radius:6px;overflow:hidden;margin:6px 0 2px}
+.bar i{display:block;height:100%;border-radius:6px}
+.exp{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+.exp .m{font-size:13px;color:var(--mut)}
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 18px);background:var(--red);color:#fff;border:0;border-radius:32px;height:64px;padding:0 30px;font-size:19px;font-weight:700;box-shadow:0 6px 18px rgba(213,43,30,.4);z-index:10}
+dialog{border:0;border-radius:20px 20px 0 0;width:100%;max-width:640px;margin:auto auto 0;padding:18px;background:var(--card);color:var(--tx)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog label{display:block;font-size:14px;color:var(--mut);margin:10px 0 4px}
+dialog input,dialog select{width:100%;font-size:18px;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--tx)}
+#fAmt{font-size:30px;font-weight:700;text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:20px;padding:10px 14px;font-size:15px}
+.chips button[aria-pressed=true]{background:var(--red);color:#fff;border-color:var(--red)}
+.btns{display:flex;gap:8px;margin-top:16px}
+.btn{flex:1;height:52px;border-radius:14px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:17px;font-weight:600}
+.btn.p{background:var(--red);color:#fff;border-color:var(--red)}
+.tools{display:flex;flex-wrap:wrap;gap:8px}.tools .btn{flex:1 1 45%;height:46px;font-size:15px}
+svg.chart text{fill:var(--mut);font-size:11px}
+.sr{position:absolute;left:-9999px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #2563eb;outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#fff"/><rect x="13" y="6" width="6" height="20" fill="#D52B1E"/><rect x="6" y="13" width="20" height="6" fill="#D52B1E"/></svg>AlpesFinance · Budget</div>
+  <div class="msw"><button id="prev" aria-label="Mois précédent">‹</button><h1 id="mTitle" aria-live="polite"></h1><button id="next" aria-label="Mois suivant">›</button></div>
+</header>
+<main>
+  <section class="card" aria-labelledby="hD"><h2 id="hD">Tableau de bord</h2>
+    <div class="row">Reste à la fin du mois</div><div class="big" id="dReste"></div>
+    <div class="row"><span>Revenus</span><b id="dInc"></b></div>
+    <div class="row"><span>− Charges fixes</span><b id="dFix"></b></div>
+    <div class="row"><span>− Épargne</span><b id="dSav"></b></div>
+    <div class="row"><span>− Variables dépensées</span><b id="dVar"></b></div>
+    <div class="row"><span>Reste si budget variable tenu</span><b id="dPlan"></b></div>
+    <div class="row"><span>Taux d'épargne</span><b id="dRate"></b></div>
+  </section>
+  <section class="card"><h2>Budget variable <span id="vTot" style="font-weight:400;font-size:14px;color:var(--mut)"></span></h2><div id="cats"></div>
+    <button class="add" id="addCat">+ Ajouter une catégorie</button></section>
+  <section class="card"><h2>Dépenses par catégorie</h2><div id="chartCat"></div></section>
+  <section class="card"><h2>Mois par mois (6 derniers)</h2><div id="chartMon"></div></section>
+  <section class="card"><h2>Dépenses du mois</h2><div id="exps"></div></section>
+  <section class="card"><h2>Revenus</h2><div id="g-income"></div><button class="add" data-add="income">+ Ajouter un revenu</button></section>
+  <section class="card"><h2>Charges fixes</h2><div id="g-fixed"></div><button class="add" data-add="fixed">+ Ajouter une charge</button></section>
+  <section class="card"><h2>Épargne</h2><div id="g-savings"></div><button class="add" data-add="savings">+ Ajouter une épargne</button></section>
+  <section class="card"><h2>Outils</h2><div class="tools">
+    <button class="btn" id="csv">Exporter CSV</button><button class="btn" id="json">Sauvegarde JSON</button>
+    <button class="btn" id="imp">Importer JSON</button><button class="btn" id="reset">Réinitialiser le mois</button></div>
+    <input type="file" id="impFile" accept="application/json,.json" class="sr" aria-label="Fichier JSON">
+    <p style="font-size:13px;color:var(--mut)">Tes données restent sur ce téléphone (localStorage). Fais une sauvegarde JSON de temps en temps.</p></section>
+</main>
+<button class="fab" id="fab" aria-label="Ajouter une dépense">＋ Dépense</button>
+<dialog id="dlg" aria-labelledby="dlgT">
+  <h2 id="dlgT" style="margin:0 0 4px">Nouvelle dépense</h2>
+  <label for="fAmt">Montant (CHF)</label><input id="fAmt" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off">
+  <label>Catégorie</label><div class="chips" id="fCats" role="group" aria-label="Catégorie"></div>
+  <label for="fNote">Note</label><input id="fNote" type="text" placeholder="ex. Migros">
+  <label for="fDate">Date</label><input id="fDate" type="date">
+  <div class="btns"><button class="btn" id="fDel" hidden>Supprimer</button><button class="btn" id="fCancel">Annuler</button><button class="btn p" id="fSave">Enregistrer</button></div>
+</dialog>
+<script src="app.js"></script>
+</body></html>
